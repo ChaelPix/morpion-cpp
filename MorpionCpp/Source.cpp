@@ -29,7 +29,7 @@ void PlayerTurn()
 		cin >> choice;
 		choice -= 1;
 		if (choice < 9) if (caseStates[choice] != 0) cout << "Case Prise" << endl;
-		else PrintMorpionHelp();
+		else;																							//Reste & gérer les inputs n'étant pas entre 1 et 9
 	} while (caseStates[choice] != 0);
 
 	caseStates[choice] = 1;
@@ -39,7 +39,7 @@ void PlayerTurn()
 void AITurn()
 {
 	int x;
-	do {
+	do {															//Créer une fonction qui return une case empechant le joueur de gagner
 		x = rand() % 8;
 	} while (caseStates[x] != 0);
 
