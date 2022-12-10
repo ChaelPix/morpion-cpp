@@ -1,2 +1,3 @@
 ﻿  Source.cpp
+D:\Cpp_Projects\morpion-cpp\MorpionCpp\GridWritter.h(53,13): warning C4553: '==' : résultat de l'expression non utilisé ; souhaitiez-vous utiliser '=' ?
   MorpionCpp.vcxproj -> D:\Cpp_Projects\morpion-cpp\MorpionCpp\Debug\MorpionCpp.exe

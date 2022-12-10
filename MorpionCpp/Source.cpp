@@ -6,8 +6,20 @@ using namespace std;
 #define Player 0
 #define AI 1
 
-int caseStates[9]; //0 Empty, 1: O, 2: X
+void PrintEnd()
+{
+	
+	string winString;
+	switch (WinnerId())
+	{
+		case Player: winString = "Vous remportez la partie !"; break;
+		case AI: winString = "L'AI remporte la partie !"; break;
+		default: winString = "Match nul !";
+	}
+	cout << "\t" << winString << endl;
+}
 
+int caseStates[9]; //0 Empty, 1: O, 2: X
 void PlayerTurn()
 {
 	int choice;
@@ -35,12 +47,25 @@ void AITurn()
 	cout << "- L'AI joue : " << endl;
 	WriteMorpionCase(x, AI);
 }
+
 void ChooseCase(int playerId)
 {
 	switch (playerId)
 	{
-		case 0: PlayerTurn(); ChooseCase(AI); break;
-		case 1: AITurn(); ChooseCase(Player); break;
+		case 0: PlayerTurn(); break;
+		case 1: AITurn(); break;
+	}
+
+	if (IsOver(playerId))
+	{
+		PrintEnd();
+		return;
+	}
+
+	switch (playerId)
+	{
+		case 0: ChooseCase(AI); break;
+		case 1: ChooseCase(Player); break;
 	}
 }
 
