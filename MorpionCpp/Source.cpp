@@ -6,20 +6,57 @@ using namespace std;
 #define Player 0
 #define AI 1
 
-void PrintEnd()
+int caseStates[9]; //0 Empty, 1: O, 2: X
+int totalGames = 0;
+
+void ResetGame()
 {
-	
-	string winString;
-	switch (WinnerId())
+	for (int i = 0; i < 9; i++)
 	{
-		case Player: winString = "Vous remportez la partie !"; break;
-		case AI: winString = "L'AI remporte la partie !"; break;
-		default: winString = "Match nul !";
+		caseStates[i] = false;
 	}
-	cout << "\t" << winString << endl;
+	ResetGrid();
 }
 
-int caseStates[9]; //0 Empty, 1: O, 2: X
+bool AskReplay()
+{
+	char replay;
+	cout << "Rejouer ? (O/N) - ";
+	cin >> replay;
+	cin.ignore();
+
+	if (replay == 'O' || replay == 'o')
+	{
+		ResetGame();
+		return true;
+	}
+	else
+		return false;
+}
+
+int scorePlayer = 0, scoreAi = 0;
+bool PrintEnd(int playerId)
+{
+	string winString;
+	int winner = playerId;
+	if (IsDraw()) playerId = 2;
+
+	switch (winner)
+	{
+		case Player: winString = "Vous remportez la partie !"; scorePlayer++;  break;
+		case AI: winString = "L'ordinateur remporte la partie !"; scoreAi++; break;
+		default: winString = "Match nul !";
+	}
+
+	totalGames++;
+	cout << "\t" << winString << endl
+		<< "\t Score - Joueur : " << scorePlayer << " - Ordinateur : " << scoreAi << endl
+		<< "\t Partie(s) : " << totalGames << endl << endl;
+	
+	return AskReplay();
+}
+
+
 bool CheckCaseState(int caseChoice)
 {
 	if (caseChoice < 9 && caseChoice >= 0)
@@ -56,14 +93,18 @@ void PlayerTurn()
 }
 void AITurn()
 {
-	int x;
-	do {															//Créer une fonction qui return une case empechant le joueur de gagner
-		x = rand() % 8;
-	} while (caseStates[x] != 0);
-
+	int x = AICasePicker();
 	caseStates[x] = 2;
-	cout << "- L'AI joue : " << endl;
+	cout << "- L'ordinateur joue : " << endl;
 	WriteMorpionCase(x, AI);
+}
+
+void StartGame()
+{
+	cout << "\tPartie #" << totalGames + 1 << endl << endl;
+	srand(time(NULL));
+	cout << "- Grille : " << endl;
+	PrintMorpionHelp();
 }
 
 void ChooseCase(int playerId)
@@ -76,8 +117,12 @@ void ChooseCase(int playerId)
 
 	if (IsOver(playerId))
 	{
-		PrintEnd();
-		return;
+		if (PrintEnd(playerId))
+		{
+			StartGame();
+			ChooseCase(Player);
+		} else
+			return;
 	}
 
 	switch (playerId)
@@ -88,10 +133,10 @@ void ChooseCase(int playerId)
 }
 
 
+
 int main()
 {
 	cout << "\t MXRPION !" << endl << "---------------------------" << endl << endl;
-
-	PrintMorpionGrid();
+	StartGame();
 	ChooseCase(Player);
 }
