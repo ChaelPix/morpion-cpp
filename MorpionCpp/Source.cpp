@@ -20,17 +20,35 @@ void PrintEnd()
 }
 
 int caseStates[9]; //0 Empty, 1: O, 2: X
+bool CheckCaseState(int caseChoice)
+{
+	if (caseChoice < 9 && caseChoice >= 0)
+	{
+		if (caseStates[caseChoice] != 0)
+			cout << "Case Prise" << endl;
+		else return true;
+	}
+	else
+	{
+		cout << "- Case Inexistante !" << endl
+			<< "> Aide : " << endl;
+		PrintMorpionHelp();
+	}
+	return false;
+}
+
 void PlayerTurn()
 {
 	int choice;
+	bool isCaseChoosen = false;
 	do
 	{
 		cout << "> Selectionnez votre case (1-9) : ";
 		cin >> choice;
+		cin.ignore();
 		choice -= 1;
-		if (choice < 9) if (caseStates[choice] != 0) cout << "Case Prise" << endl;
-		else;																							//Reste & gérer les inputs n'étant pas entre 1 et 9
-	} while (caseStates[choice] != 0);
+		isCaseChoosen = CheckCaseState(choice);
+	} while (!isCaseChoosen);
 
 	caseStates[choice] = 1;
 	cout << "- Vous jouez : " << endl;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 char grid[] = { '*', '|', '*', '|', '*', '\n', '*', '|', '*', '|', '*' , '\n', '*', '|', '*', '|', '*' };
@@ -7,6 +8,20 @@ char characters[] = { 'X', 'O' };
 int winnerId = 0;
 
 int winConditions[][3] = { {0, 1, 2}, {0, 3, 6}, {0, 4, 8}, {1, 4, 7}, {2, 4, 6}, {2, 5, 8}, {6, 7, 8}, {3, 4, 5} };
+
+void PrintMorpionHelp()
+{
+	char helpGrid[17];
+	copy(begin(grid), end(grid), begin(helpGrid));
+
+	for (int i = 0; i < 17; i++)
+	{
+		if (helpGrid[i] == '*')
+			helpGrid[i] = (i/2) + '1';
+		cout << helpGrid[i];	
+	}
+	cout << endl << endl;
+}
 
 void PrintMorpionGrid()
 {
@@ -42,7 +57,7 @@ bool HasSomeoneWon(int playerId)
 			pos[j] = winConditions[i][j];
 		}
 
-		if (((characters[playerId] == gridElement[pos[0]]) && gridElement[pos[0]] == gridElement[pos[1]]) && gridElement[pos[1]] == +gridElement[pos[2]]) //Compare si les 3 positions ont le même character
+		if (((characters[playerId] == gridElement[pos[0]]) && gridElement[pos[0]] == gridElement[pos[1]]) && gridElement[pos[1]] == gridElement[pos[2]]) //Compare si les 3 positions ont le même character
 		{
 			hasAWinner = true;
 			winnerId == playerId;
