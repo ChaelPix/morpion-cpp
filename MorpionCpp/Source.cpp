@@ -39,13 +39,13 @@ bool PrintEnd(int playerId)
 {
 	string winString;
 	int winner = playerId;
-	if (IsDraw()) playerId = 2;
+	if (IsDraw()) winner = 2;
 
 	switch (winner)
 	{
 		case Player: winString = "Vous remportez la partie !"; scorePlayer++;  break;
 		case AI: winString = "L'ordinateur remporte la partie !"; scoreAi++; break;
-		default: winString = "Match nul !";
+		case 2: winString = "Match nul !";
 	}
 
 	totalGames++;
@@ -62,8 +62,13 @@ bool CheckCaseState(int caseChoice)
 	if (caseChoice < 9 && caseChoice >= 0)
 	{
 		if (caseStates[caseChoice] != 0)
-			cout << "Case Prise" << endl;
-		else return true;
+		{
+			cout << "Case Prise" << endl
+				<< "> Aide : " << endl;
+			PrintMorpionHelp();
+		}
+		else 
+			return true;
 	}
 	else
 	{
@@ -91,6 +96,7 @@ void PlayerTurn()
 	cout << "- Vous jouez : " << endl;
 	WriteMorpionCase(choice, Player);
 }
+
 void AITurn()
 {
 	int x = AICasePicker();
@@ -131,8 +137,6 @@ void ChooseCase(int playerId)
 		case 1: ChooseCase(Player); break;
 	}
 }
-
-
 
 int main()
 {
